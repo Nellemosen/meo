@@ -140,3 +140,27 @@ data/asset-map.js): the Quaternius library drives the Quaternius characters, the
 the KayKit skeletons. A clip only plays on a model whose bone names it targets.
 
 Toggles: Options → Graphics → Detailed trees and rocks.
+
+## v0.27 – Cave groundwork (unfinished, off by default)
+`core/kit-cave.js` dresses a zone marked `theme.cave` with the Mines and Cave Modular Set
+(CC0, loafbrr): instanced cave and mine walls on every rock face, timber supports, pillars,
+a rock ceiling, no sky and a torch that follows the player.
+
+It is **off by default** (Options → Graphics → Cave dressing underground). Khazad-dûm was laid
+out as open ground with scattered rock rather than as corridors and halls, so dressing it this
+way leaves large empty stretches. Making it read as a cave needs the zone's layout rebuilt —
+solid rock with carved passages — not just different models. The kit and the renderer support
+are in place for that work.
+
+## v0.28 – Second Age correction
+The Rings of Power re-skin renamed things but left Book IV with the shape of Third Age Moria:
+a dead city, goblin hordes, a cave troll and a Balrog. In the Second Age Khazad-dûm is at its
+height, and Adar's orcs are in the Southlands, not under the mountain. `data/book4.js` fixes it:
+
+- **Khazad-dûm is a living kingdom and the end of Book III.** Durin IV, Disa and Nár keep the
+  forges and the mithril vein. No orcs, no troll, no Balrog. The one danger is the deep delve,
+  where the digging went too far and something nameless came up the shaft.
+- **Book IV is now "The Fire of Orodruin":** Adar's host marches on Tirharad, the broken hilt
+  turns out to be a key, the warleader Magrot holds the lock, and the mountain wakes. Eight
+  quests across Tirharad, the Ashen Hills and a new zone, `orodruin`.
+- New creatures: deep crawlers, the Nameless Gnawer, Adar's marauders and houndmasters, Magrot.
