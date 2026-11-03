@@ -7,7 +7,7 @@
 
   const MEO = (window.MEO = window.MEO || {});
 
-  MEO.VERSION = '0.27.0 (Cave groundwork)';
+  MEO.VERSION = '0.28.0 (Second Age correction)';
 
   MEO.CONFIG = {
     TILE: 32,          // pixels per tile
