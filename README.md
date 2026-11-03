@@ -127,3 +127,16 @@ Wolves, spiders and the great beasts are still procedural — no CC0 models for 
 Barrels, crates, banners, torches, market stalls, the smithy and the house furniture are models
 from Quaternius' Fantasy Props MegaKit (CC0), assembled by `core/kit-props.js`. The training
 dummies use the kit's dummy. Toggle in Options → Graphics → Detailed props.
+
+## v0.26 – Real trees, rocks and the undead
+Trees and rocks come from the KayKit Forest Nature Pack (CC0) and are drawn with
+`THREE.InstancedMesh`, so a forest of a thousand trees costs a handful of draw calls
+(`core/kit-nature.js`; terrain records the spots it would have filled and skips its own
+geometry). Barrow shades, ashen wights and the ash-wraith are KayKit skeletons, animated by
+the KayKit Character Animations library.
+
+Animation clips are matched to a model by its rig (`MEO.ASSET_RIG` / `MEO.ASSET_LIBS` in
+data/asset-map.js): the Quaternius library drives the Quaternius characters, the KayKit library
+the KayKit skeletons. A clip only plays on a model whose bone names it targets.
+
+Toggles: Options → Graphics → Detailed trees and rocks.

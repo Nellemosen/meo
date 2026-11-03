@@ -117,6 +117,7 @@
         kill(r.mesh);
       });
       kill(Terrain.water);
+      Terrain.natureSpots = [];
       Terrain.chunks = [];
       Terrain.roofs = [];
       Terrain.emitters = [];
@@ -410,6 +411,7 @@
         return -1;
       };
 
+      const kitNature = !!(MEO.KitNature && MEO.KitNature.on());
       const GRN = [[58, 84, 42], [66, 92, 46], [50, 74, 44], [80, 98, 48]];
       const AUT = [[138, 108, 46], [150, 88, 44]];
 
@@ -431,6 +433,10 @@
             const z = czm + (r2 - 0.5) * 1.2;
             const y = hAt(x, z) - 0.12;
             const s = (0.8 + r3 * 0.75) * (edge < 3 ? 1.35 : 1);
+            if (kitNature) {
+              Terrain.natureSpots.push({ k: 'tree', x: x, y: y + 0.12, z: z, s: s, rot: r1 * 6.28, v: r2, v2: r3 });
+              continue;
+            }
             mb.push().translate(x, y, z).rotY(r1 * 6.28);
             if (r2 >= 0.55 && r3 < 0.22) {
               // birch: pale trunk, light airy crown
@@ -493,6 +499,10 @@
             const x = cxm + (r1 - 0.5) * 0.6;
             const z = czm + (r2 - 0.5) * 0.6;
             const y = hAt(x, z);
+            if (kitNature) {
+              Terrain.natureSpots.push({ k: 'rock', x: x, y: y, z: z, s: big, rot: r1 * 6.28, v: r3, v2: r2 });
+              continue;
+            }
             const g = 108 + r3 * 36;
             const col = [g, g * 0.98, g * 0.94];
             mb.blob(x, y + 0.45 * big, z, (0.95 + r3 * 0.4) * big, (0.75 + r1 * 0.45) * big, (0.95 + r2 * 0.35) * big, col, 2, 0.2, tx * 17 + ty * 3, 0.5);

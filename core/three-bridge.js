@@ -201,6 +201,7 @@
       while (grp.children.length) grp.remove(grp.children[0]);
       if (MEO.Kit) MEO.Kit.clear(grp);
       if (MEO.KitProps) MEO.KitProps.clear();
+      if (MEO.KitNature) MEO.KitNature.clear();
       if (MEO.Assets && MEO.Assets.purge) MEO.Assets.purge();
       Three._roofMeshes = [];
       Three._water = null;
@@ -227,6 +228,7 @@
       });
       if (MEO.Kit && MEO.Kit.on()) MEO.Kit.build(MEO.Renderer.world, grp, function (x, z) { return Tr.heightAt(x, z); });
       if (MEO.KitProps && MEO.KitProps.on()) MEO.KitProps.build(MEO.Renderer.world, grp, function (x, z) { return Tr.heightAt(x, z); });
+      if (MEO.KitNature && MEO.KitNature.on()) MEO.KitNature.build(grp);
       if (Tr.water) {
         const m = new T3.Mesh(Three.geometry(Tr.water), Three.material('water'));
         m.renderOrder = 5; m.matrixAutoUpdate = false;
