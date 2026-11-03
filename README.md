@@ -116,6 +116,9 @@ for anything on the same rig. `tools/build_glb.py` converts a kit's .gltf (or .g
 self-contained .glb with embedded, down-scaled textures, and can keep a chosen set of animations
 or strip geometry for an animation-only file. `data/asset-map.js` maps creatures to models.
 
-Orcs and goblins now use the Ultimate Monsters orc. People still use the procedural models:
-the Universal Base Characters are bare base bodies, so dressed characters need Quaternius'
-"Modular Character Outfits – Fantasy" (CC0) before the humanoid mapping can be switched on.
+## v0.24 – Dressed characters
+People are drawn from Quaternius' "Modular Character Outfits – Fantasy" (CC0): villagers wear the
+peasant outfit, the player, companions and brigands the ranger outfit, each in a male and a female
+version picked from the character's name. They sit on the Universal Base Characters rig, so the
+Universal Animation Library drives them. Orcs and goblins use the Ultimate Monsters orc.
+Wolves, spiders and the great beasts are still procedural — no CC0 models for them yet.

@@ -1,22 +1,30 @@
 /* data/asset-map.js – which glTF model stands in for which creature, and how tall it is (metres).
    Ids are the file names in assets/models/ without .glb. Add a model, run
-   `node tools/pack-assets.js`, then map it here. Anything not listed keeps the procedural model. */
+   `node tools/pack-assets.js`, then map it here. Anything not listed keeps the procedural model.
+   Models: Quaternius "Modular Character Outfits - Fantasy" (peasant + ranger, CC0) on the
+   Universal Base Characters rig, so the Universal Animation Library drives them. */
 MEO.ASSET_MAP = {
-  // People: player, companions and NPCs. One model is chosen per character from their name, so a
-  // village is not all the same person. EMPTY ON PURPOSE: the Universal Base Characters are bare
-  // base bodies with no clothes. Add Quaternius' "Modular Character Outfits - Fantasy" (CC0),
-  // build dressed characters, then put their ids back here:
-  //   humanoid: ['char_male', 'char_female'],
-  humanoid: [],
+  // People. One model is picked per character from their name, so a village is not all the
+  // same person. Villagers wear peasant clothes; the player, companions and brigands are rangers.
+  people: {
+    npc: ['m_peasant', 'f_peasant'],
+    player: ['m_ranger'],
+    party: ['m_ranger', 'f_ranger'],
+    mob: ['m_ranger', 'f_ranger']
+  },
   mob: {
     orc_scout: 'orc', orc_brute: 'orc', warchief: 'orc', hill_orc: 'orc',
-    isengard_scout: 'orc', moria_orc: 'orc', moria_goblin: 'orc', goblin_sneak: 'orc'
-    // human raiders (footpad, bandit, ruffian) wait for dressed character models too
+    isengard_scout: 'orc', moria_orc: 'orc', moria_goblin: 'orc', goblin_sneak: 'orc',
+    footpad: 'people', bandit: 'people', bandit_archer: 'people', ruffian: 'people'
   }
 };
-MEO.ASSET_HEIGHT = { char_male: 1.85, char_female: 1.76, orc: 2.0 };
+// A few named people who should not be left to chance. NPC ids repeat across zones, so an id
+// can be a different person in another zone; only clear cases belong here.
+MEO.ASSET_NPC = { gandalf: 'f_ranger', rosie: 'f_peasant', bilbo: 'f_peasant' };
+MEO.ASSET_HEIGHT = { m_ranger: 1.85, f_ranger: 1.76, m_peasant: 1.82, f_peasant: 1.74, orc: 2.0 };
 MEO.ASSET_RACE_H = { human: 1.85, elf: 1.95, dwarf: 1.40, hobbit: 1.15 };
 MEO.ASSET_MOB_H = {
   orc_scout: 1.85, orc_brute: 2.25, warchief: 2.5, hill_orc: 1.95,
-  isengard_scout: 1.9, moria_orc: 2.0, moria_goblin: 1.5, goblin_sneak: 1.5
+  isengard_scout: 1.9, moria_orc: 2.0, moria_goblin: 1.5, goblin_sneak: 1.5,
+  footpad: 1.8, bandit: 1.85, bandit_archer: 1.75, ruffian: 1.88
 };

@@ -71,21 +71,30 @@
     pick(e) {
       const M = MEO.ASSET_MAP || {};
       const H = MEO.ASSET_HEIGHT || {};
+      const P = M.people || {};
+      const key = String(e.npcId || e.mobId || e.classId || e.id || e.name || 'x');
+      const fromSet = function (set, height) {
+        if (!set || !set.length) return null;
+        const id = set[Math.floor(hash(key) * set.length) % set.length];
+        return Assets.models[id] ? { id: id, height: height || H[id] || 1.85 } : null;
+      };
       if (e.type === 'mob') {
+        if (e.isStatic || e.shape === 'dummy') return null;
         const id = M.mob && M.mob[e.mobId];
-        if (!id || !Assets.models[id]) return null;
-        const h = (MEO.ASSET_MOB_H && MEO.ASSET_MOB_H[e.mobId]) || H[id] || 1.85;
-        return { id: id, height: h };
+        if (!id) return null;
+        const h = (MEO.ASSET_MOB_H && MEO.ASSET_MOB_H[e.mobId]) || null;
+        if (id === 'people') return fromSet(P.mob, h);          // a human enemy: use a person model
+        return Assets.models[id] ? { id: id, height: h || H[id] || 1.85 } : null;
       }
       if (e.isStatic && e.shape === 'dummy') return null;
-      // people: player, companions and NPCs share the humanoid models
-      const set = M.humanoid;
-      if (!set || !set.length) return null;
-      const key = String(e.npcId || e.classId || e.id || e.name || 'x');
-      const id = set[Math.floor(hash(key) * set.length) % set.length];
-      if (!Assets.models[id]) return null;
+      const named = MEO.ASSET_NPC && e.npcId && MEO.ASSET_NPC[e.npcId];
+      if (named && Assets.models[named]) {
+        const rh = (MEO.ASSET_RACE_H && MEO.ASSET_RACE_H[e.raceId]) || null;
+        return { id: named, height: rh || H[named] || 1.85 };
+      }
+      const set = e.type === 'player' ? P.player : e.type === 'party' ? P.party : P.npc;
       const race = (MEO.ASSET_RACE_H && MEO.ASSET_RACE_H[e.raceId]) || null;
-      return { id: id, height: race || H[id] || 1.85 };
+      return fromSet(set, race);
     },
 
     clipFor(inst, kind) {
