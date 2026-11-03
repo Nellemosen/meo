@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rings of Power Online</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="game" tabindex="0"></canvas>
+  <canvas id="overlay"></canvas>
+  <div id="hud"></div>
+
+  <div id="start-screen" class="overlay">
+    <div class="card">
+      <div class="kicker">Races and Classes</div>
+      <h1>Rings of Power Online</h1>
+      <p class="sub">Choose your race and class</p>
+      <div id="race-select" class="classes races"></div>
+      <p id="race-desc" class="class-desc"></p>
+      <div id="class-select" class="classes"></div>
+      <p id="class-desc" class="class-desc"></p>
+      <ul class="controls">
+        <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move &nbsp; <kbd>E</kbd> talk &nbsp; <kbd>Wheel</kbd> zoom &nbsp; <kbd>Drag</kbd> / right mouse button: camera</li>
+        <li><kbd>Tab</kbd> next enemy &nbsp; <kbd>Click</kbd> select target &nbsp; <kbd>F1</kbd>&ndash;<kbd>F4</kbd> yourself / companions</li>
+        <li>Companions: <kbd>R</kbd> attack my target &nbsp; <kbd>V</kbd> regroup &nbsp; <kbd>G</kbd> stance &nbsp; <kbd>L</kbd> quest log &nbsp; <kbd>I</kbd> backpack &nbsp; <kbd>F9</kbd> debug</li>
+        <li><kbd>1</kbd>&ndash;<kbd>8</kbd> abilities &nbsp; <kbd>Q</kbd> auto-attack &nbsp; <kbd>Esc</kbd> clear target / pause</li>
+        <li><kbd>I</kbd> backpack &nbsp; <kbd>E</kbd> loot / talk &nbsp; <kbd>9</kbd> <kbd>0</kbd> potions</li>
+        <li>Enemies roam outside the town. The dummies north of the square are for practice. The Fallen Tower holds a boss: bring your party.</li>
+      </ul>
+      <button id="btn-continue" class="btn" type="button" hidden>Continue</button>
+      <button id="btn-start" class="btn" type="button">Begin the adventure</button>
+      <button id="btn-options-start" class="btn secondary" type="button">Options and keybinds</button>
+      <div class="foot">Press Enter to start</div>
+    </div>
+  </div>
+
+  <div id="pause-screen" class="overlay" hidden>
+    <div class="card small">
+      <h2>Pause</h2>
+      <p class="sub">The game is paused.</p>
+      <button id="btn-resume" class="btn" type="button">Resume</button>
+      <button id="btn-save" class="btn" type="button">Save game</button>
+      <button id="btn-options" class="btn" type="button">Options</button>
+      <div class="foot">Press Esc to resume</div>
+    </div>
+  </div>
+
+  <noscript>
+    <div class="overlay"><div class="card small"><h2>JavaScript required</h2><p class="sub">Enable JavaScript in your browser to play.</p></div></div>
+  </noscript>
+
+  <!-- core -->
+  <script src="core/namespace.js"></script>
+  <script src="core/events.js"></script>
+  <script src="core/engine.js"></script>
+  <script src="core/input.js"></script>
+  <script src="core/world.js"></script>
+  <script src="core/entity.js"></script>
+  <script src="core/gl.js"></script>
+  <script src="core/terrain.js"></script>
+  <script src="core/models.js"></script>
+  <script src="core/fx3d.js"></script>
+  <script src="core/post.js"></script>
+  <script src="lib/three.min.js"></script>
+  <script src="lib/GLTFLoader.js"></script>
+  <script src="lib/SkeletonUtils.js"></script>
+  <script src="assets/models.js"></script>
+  <script src="core/renderer.js"></script>
+  <script src="core/three-bridge.js"></script>
+  <script src="core/assets.js"></script>
+  <script src="data/asset-map.js"></script>
+  <!-- data -->
+  <script src="data/classes.js"></script>
+  <script src="data/abilities-data.js"></script>
+  <script src="data/abilities-new.js"></script>
+  <script src="data/races.js"></script>
+  <script src="data/traits.js"></script>
+  <script src="data/fellowship.js"></script>
+  <script src="data/mobs.js"></script>
+  <script src="data/items.js"></script>
+  <script src="data/spawns.js"></script>
+  <script src="data/quests.js"></script>
+  <script src="data/story.js"></script>
+  <script src="data/zones.js"></script>
+  <script src="data/lore-ra.js"></script>
+  <script src="data/lore-ra-quests.js"></script>
+  <script src="data/vo.js"></script>
+  <!-- combat -->
+  <script src="combat/combat.js"></script>
+  <script src="combat/buffs.js"></script>
+  <script src="combat/threat.js"></script>
+  <script src="combat/abilities.js"></script>
+  <script src="combat/targeting.js"></script>
+  <!-- ai and systems -->
+  <script src="ai/enemy-ai.js"></script>
+  <script src="ai/spawner.js"></script>
+  <script src="ai/party-ai.js"></script>
+  <script src="ai/boss-ai.js"></script>
+  <script src="systems/inventory.js"></script>
+  <script src="systems/loot.js"></script>
+  <script src="systems/races.js"></script>
+  <script src="systems/traits.js"></script>
+  <script src="systems/fellowship.js"></script>
+  <script src="systems/party.js"></script>
+  <script src="systems/progression.js"></script>
+  <script src="systems/quests.js"></script>
+  <script src="systems/hazards.js"></script>
+  <script src="systems/audio.js"></script>
+  <script src="systems/settings.js"></script>
+  <script src="systems/voice.js"></script>
+  <script src="systems/save.js"></script>
+  <!-- ui -->
+  <script src="ui/hud.js"></script>
+  <script src="ui/frames.js"></script>
+  <script src="ui/combat-text.js"></script>
+  <script src="ui/inventory-ui.js"></script>
+  <script src="ui/traits-ui.js"></script>
+  <script src="ui/fellowship-ui.js"></script>
+  <script src="ui/party-frames.js"></script>
+  <script src="ui/party-ui.js"></script>
+  <script src="ui/quest-ui.js"></script>
+  <script src="ui/boss-ui.js"></script>
+  <script src="ui/options-ui.js"></script>
+  <!-- start -->
+  <script src="main.js"></script>
+</body>
+</html>
