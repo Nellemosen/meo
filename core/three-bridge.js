@@ -199,6 +199,7 @@
       Three._chunksRef = Tr.chunks;
       const grp = Three._terrainGroup;
       while (grp.children.length) grp.remove(grp.children[0]);
+      if (MEO.Kit) MEO.Kit.clear(grp);
       Three._roofMeshes = [];
       Three._water = null;
       Tr.chunks.forEach(function (ch) {
@@ -222,6 +223,7 @@
         grp.add(m);
         Three._roofMeshes.push(m);
       });
+      if (MEO.Kit && MEO.Kit.on()) MEO.Kit.build(MEO.Renderer.world, grp, function (x, z) { return Tr.heightAt(x, z); });
       if (Tr.water) {
         const m = new T3.Mesh(Three.geometry(Tr.water), Three.material('water'));
         m.renderOrder = 5; m.matrixAutoUpdate = false;
@@ -326,6 +328,13 @@
         m.visible = rf.alpha > 0.03;
         m.material.opacity = rf.alpha;
         m.material.depthWrite = rf.alpha > 0.98;
+      }
+      if (MEO.Kit && MEO.Kit.roofs.length) {
+        const rs = MEO.Kit.roofs;
+        for (let i = 0; i < rs.length; i++) {
+          const rf = MEO.Terrain.roofs[rs[i].index];
+          rs[i].obj.visible = !rf || rf.alpha > 0.5;
+        }
       }
 
       Three._drawEntities(time);
