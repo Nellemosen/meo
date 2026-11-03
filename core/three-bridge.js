@@ -202,6 +202,7 @@
       if (MEO.Kit) MEO.Kit.clear(grp);
       if (MEO.KitProps) MEO.KitProps.clear();
       if (MEO.KitNature) MEO.KitNature.clear();
+      if (MEO.KitCave) MEO.KitCave.clear();
       if (MEO.Assets && MEO.Assets.purge) MEO.Assets.purge();
       Three._roofMeshes = [];
       Three._water = null;
@@ -229,6 +230,7 @@
       if (MEO.Kit && MEO.Kit.on()) MEO.Kit.build(MEO.Renderer.world, grp, function (x, z) { return Tr.heightAt(x, z); });
       if (MEO.KitProps && MEO.KitProps.on()) MEO.KitProps.build(MEO.Renderer.world, grp, function (x, z) { return Tr.heightAt(x, z); });
       if (MEO.KitNature && MEO.KitNature.on()) MEO.KitNature.build(grp);
+      if (MEO.KitCave) MEO.KitCave.build(MEO.Renderer.world, grp, function (x, z) { return Tr.heightAt(x, z); });
       if (Tr.water) {
         const m = new T3.Mesh(Three.geometry(Tr.water), Three.material('water'));
         m.renderOrder = 5; m.matrixAutoUpdate = false;
@@ -250,6 +252,19 @@
       Three.hemi.intensity = 0.6 * (mood.amb == null ? 1 : mood.amb);
       Three.hemi.color.setRGB(0.46, 0.58, 0.82).convertSRGBToLinear();
       Three.hemi.groundColor.setRGB(0.30, 0.28, 0.2).convertSRGBToLinear();
+      // underground: no sky, dim sun, a little ambient bounce (the torch is added per frame)
+      Three.cave = !!(R.world && R.world.theme && R.world.theme.cave) && !!(MEO.KitCave && MEO.KitCave.on(R.world));
+      Three.sky.visible = !Three.cave;
+      if (Three.cave) {
+        Three.scene.background = new T3.Color(0x05050a);
+        Three.sun.intensity = 0.8;
+        Three.hemi.intensity = 0.55;
+        Three.hemi.color.setRGB(0.30, 0.33, 0.45).convertSRGBToLinear();
+        Three.hemi.groundColor.setRGB(0.12, 0.11, 0.10).convertSRGBToLinear();
+      } else {
+        Three.scene.background = Three._fogCol;
+        if (Three.torch) Three.torch.visible = false;
+      }
     },
 
     // ---- Entities ----------------------------------------------------------------------------
@@ -342,8 +357,22 @@
         }
       }
 
+      // a torch the player carries underground, so the rock around them reads
+      if (Three.cave) {
+        if (!Three.torch) {
+          Three.torch = new T3.PointLight(0xffb45a, 24, 26, 1.6);
+          Three.torch.castShadow = false;
+          Three.scene.add(Three.torch);
+        }
+        Three.torch.visible = true;
+        Three.torch.position.set(f[0], f[1] + 1.7, f[2]);
+        Three.torch.intensity = 22 + Math.sin(time * 7.3) * 2.5 + Math.sin(time * 3.1) * 1.5;
+      } else if (Three.torch) {
+        Three.torch.visible = false;
+      }
+
       Three._drawEntities(time);
-      Three.scene.fog.density = R.fogDen;
+      Three.scene.fog.density = Three.cave ? R.fogDen * 2.4 : R.fogDen;
 
       gl.viewport(0, 0, R.canvas.width, R.canvas.height);
       r.setSize(R.canvas.width, R.canvas.height, false);

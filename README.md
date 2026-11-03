@@ -140,3 +140,14 @@ data/asset-map.js): the Quaternius library drives the Quaternius characters, the
 the KayKit skeletons. A clip only plays on a model whose bone names it targets.
 
 Toggles: Options → Graphics → Detailed trees and rocks.
+
+## v0.27 – Cave groundwork (unfinished, off by default)
+`core/kit-cave.js` dresses a zone marked `theme.cave` with the Mines and Cave Modular Set
+(CC0, loafbrr): instanced cave and mine walls on every rock face, timber supports, pillars,
+a rock ceiling, no sky and a torch that follows the player.
+
+It is **off by default** (Options → Graphics → Cave dressing underground). Khazad-dûm was laid
+out as open ground with scattered rock rather than as corridors and halls, so dressing it this
+way leaves large empty stretches. Making it read as a cave needs the zone's layout rebuilt —
+solid rock with carved passages — not just different models. The kit and the renderer support
+are in place for that work.

@@ -429,6 +429,7 @@
 
           if (id === ID.TREE) {
             if (edge < 0) continue;
+            if (MEO.KitCave && MEO.KitCave.on(w)) continue;  // nothing grows under the mountain
             const x = cxm + (r1 - 0.5) * 1.2;
             const z = czm + (r2 - 0.5) * 1.2;
             const y = hAt(x, z) - 0.12;
@@ -495,6 +496,7 @@
               }
             }
           } else if (id === ID.ROCK) {
+            if (MEO.KitCave && MEO.KitCave.on(w)) continue;   // real cave walls instead
             const big = edge < 1 ? 2.3 : 1;
             const x = cxm + (r1 - 0.5) * 0.6;
             const z = czm + (r2 - 0.5) * 0.6;
@@ -510,6 +512,7 @@
             if (r1 > 0.45 && big === 1) mb.blob(x + 0.8, y + 0.2, z - 0.5, 0.45, 0.35, 0.5, GL.shade(col, 0.9), 0, 0.2, tx + ty * 9, 0.6);
           } else if (id === ID.WALL) {
             if (MEO.Kit && MEO.Kit.on() && buildingOf(tx, ty) >= 0) continue;   // real house models instead
+            if (MEO.KitCave && MEO.KitCave.on(w)) continue;                     // real cave walls instead
             Terrain._wall(w, mb, tx, ty, hash, hAt, village, ruins, inRect, buildingOf);
           } else if (id === ID.WELL) {
             const y = hAt(cxm, czm);
