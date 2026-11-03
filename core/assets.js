@@ -27,6 +27,8 @@
         loader.parse(buf.buffer, '', function (g) {
           g.scene.traverse(function (o) { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; } });
           Assets.models[id] = { scene: g.scene, clips: g.animations || [] };
+          const R = MEO.Renderer;
+          if (R && R.world) R.setWorld(R.world);   // rebuild so new models appear at once
         }, function (err) { console.warn('[Assets] could not parse ' + id, err); });
       });
       Assets.ready = true;

@@ -42,6 +42,7 @@
       MEO.Settings.init();
       MEO.OptionsUI.init();
       MEO.InventoryUI.init();
+      if (MEO.Assets) MEO.Assets.load();
       MEO.TraitsUI.init();
       MEO.PartyUI.init();
       MEO.FellowshipUI.init();

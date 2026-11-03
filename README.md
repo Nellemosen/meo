@@ -104,3 +104,6 @@ Press **P** to recruit or dismiss companions on the go (0–4, any class but you
 
 ## v0.21 – three.js renderer
 Options → Graphics → Graphics engine: three.js (PBR lighting, soft shadows, tone mapping) or Classic. Put CC0 .glb files in assets/models/, run `node tools/pack-assets.js`, and map them in data/asset-map.js.
+
+## v0.22 – Real houses
+Villages are assembled from the Quaternius Medieval Village MegaKit (CC0): modular walls, doors, windows, tiled roofs and chimneys, with PBR textures. Toggle in Options → Graphics → Detailed houses. Kit source: assets/models/village_kit.glb, built by tools/merge_gltf.py; assembly logic in core/kit-buildings.js.
