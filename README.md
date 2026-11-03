@@ -104,3 +104,21 @@ Press **P** to recruit or dismiss companions on the go (0–4, any class but you
 
 ## v0.21 – three.js renderer
 Options → Graphics → Graphics engine: three.js (PBR lighting, soft shadows, tone mapping) or Classic. Put CC0 .glb files in assets/models/, run `node tools/pack-assets.js`, and map them in data/asset-map.js.
+
+## v0.22 – Real houses
+Villages are assembled from the Quaternius Medieval Village MegaKit (CC0): modular walls, doors, windows, tiled roofs and chimneys, with PBR textures. Toggle in Options → Graphics → Detailed houses. Kit source: assets/models/village_kit.glb, built by tools/merge_gltf.py; assembly logic in core/kit-buildings.js.
+
+## v0.23 – glTF creatures and the animation library
+`core/assets.js` draws creatures from glTF models when the three.js renderer is on, with
+animations resolved by bone name: the Quaternius characters carry no clips, and the Universal
+Animation Library (`assets/models/anims.glb`) supplies idle / walk / run / attack / hit / death
+for anything on the same rig. `tools/build_glb.py` converts a kit's .gltf (or .glb) into one
+self-contained .glb with embedded, down-scaled textures, and can keep a chosen set of animations
+or strip geometry for an animation-only file. `data/asset-map.js` maps creatures to models.
+
+## v0.24 – Dressed characters
+People are drawn from Quaternius' "Modular Character Outfits – Fantasy" (CC0): villagers wear the
+peasant outfit, the player, companions and brigands the ranger outfit, each in a male and a female
+version picked from the character's name. They sit on the Universal Base Characters rig, so the
+Universal Animation Library drives them. Orcs and goblins use the Ultimate Monsters orc.
+Wolves, spiders and the great beasts are still procedural — no CC0 models for them yet.

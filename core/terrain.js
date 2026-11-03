@@ -499,6 +499,7 @@
             mb.blob(x + (r2 - 0.5) * 0.5, y + 0.85 * big, z + (r1 - 0.5) * 0.5, 0.55 * big, 0.2 * big, 0.55 * big, [70, 88, 46], 1, 0.25, tx + ty * 13, 0.8);
             if (r1 > 0.45 && big === 1) mb.blob(x + 0.8, y + 0.2, z - 0.5, 0.45, 0.35, 0.5, GL.shade(col, 0.9), 0, 0.2, tx + ty * 9, 0.6);
           } else if (id === ID.WALL) {
+            if (MEO.Kit && MEO.Kit.on() && buildingOf(tx, ty) >= 0) continue;   // real house models instead
             Terrain._wall(w, mb, tx, ty, hash, hAt, village, ruins, inRect, buildingOf);
           } else if (id === ID.WELL) {
             const y = hAt(cxm, czm);
@@ -707,6 +708,11 @@
         // floor rug
         mbP.box(x0 + 5.0, y + 0.015, z0 + TM + 2.4, 2.4, 0.03, 1.6, [120, 52, 48], 1);
         // roof (separate mesh – hidden when the player is inside)
+        if (MEO.Kit && MEO.Kit.on()) {
+          Terrain.roofs.push({ mesh: null, index: i, x0: b.x - 0.3, y0: b.y - 0.3, x1: b.x + b.w + 0.3, y1: b.y + b.h + 0.3, alpha: 1 });
+          Terrain.emitters.push({ kind: 'torch', x: (b.doorX + 0.5) * TM + 1.25, y: y + 2.0, z: (b.y + b.h - 0.5) * TM + 0.5, seed: i });
+          return;
+        }
         const rb = new GL.MeshBuilder();
         const ry = y + 2.9;
         const col = roofCols[Math.floor(hash(b.x, b.y, 91) * roofCols.length) % roofCols.length];
