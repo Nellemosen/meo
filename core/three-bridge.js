@@ -201,6 +201,7 @@
       while (grp.children.length) grp.remove(grp.children[0]);
       if (MEO.Kit) MEO.Kit.clear(grp);
       if (MEO.KitProps) MEO.KitProps.clear();
+      if (MEO.Assets && MEO.Assets.purge) MEO.Assets.purge();
       Three._roofMeshes = [];
       Three._water = null;
       Tr.chunks.forEach(function (ch) {

@@ -194,6 +194,12 @@
       if (i >= 0) Assets._live.splice(i, 1);
     },
 
+    /** Drop every instance (a new zone, or the renderer rebuilt the scene). */
+    purge() {
+      Assets._live.slice().forEach(Assets._dispose);
+      Assets._used = [];
+    },
+
     /** Hide instances not drawn this frame and drop ones gone for a while. */
     endFrame() {
       const used = Assets._used;
@@ -210,9 +216,6 @@
 
   // a new zone means new creatures: drop every instance
   if (MEO.Events) {
-    MEO.Events.on('zone:enter', function () {
-      Assets._live.slice().forEach(Assets._dispose);
-      Assets._used = [];
-    });
+    MEO.Events.on('zone:enter', function () { Assets.purge(); });
   }
 })();
