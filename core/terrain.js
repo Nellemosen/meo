@@ -694,17 +694,20 @@
       const roofCols = (w.theme && w.theme.roofs) || [[148, 70, 52], [132, 100, 58], [120, 64, 56], [140, 108, 62]];
       w.buildings.forEach(function (b, i) {
         const mbP = chunkOf(b.x + 1, b.y + 1).p;
+        const kitFurn = MEO.KitProps && MEO.KitProps.on();
         const x0 = b.x * TM, z0 = b.y * TM, x1 = (b.x + b.w) * TM, z1 = (b.y + b.h) * TM;
         const y = hAt((x0 + x1) / 2, (z0 + z1) / 2);
         // furnishings: bed, table, stools, crate, rug
-        mbP.box(x0 + 2.0 * 1.0 + 0.2, y + 0.3, z0 + TM + 0.9, 1.0, 0.45, 2.0, [150, 60, 54], 0.7);
-        mbP.box(x0 + 2.0 + 0.2, y + 0.58, z0 + TM + 0.35, 0.9, 0.18, 0.5, [226, 216, 196], 0.9);
-        mbP.box(x0 + 6.0, y + 0.45, z0 + TM + 2.0, 1.5, 0.12, 1.0, [112, 78, 46], 0.8);
-        mbP.box(x0 + 5.35, y + 0.22, z0 + TM + 1.0 * 2, 0.12, 0.45, 0.12, [86, 60, 36], 0.6);
-        mbP.box(x0 + 6.65, y + 0.22, z0 + TM + 2.0, 0.12, 0.45, 0.12, [86, 60, 36], 0.6);
-        mbP.cyl(x0 + 5.0, y, z0 + TM + 3.0 - 0.2, 0.28, 0.25, 0.4, 6, [112, 78, 46], 0.7);
-        mbP.box(x1 - TM - 0.6, y + 0.35, z0 + TM + 0.5, 0.9, 0.7, 0.7, [120, 90, 56], 0.7);
-        mbP.cyl(x0 + 6.4, y + 0.46, z0 + TM + 2.0, 0.14, 0.12, 0.2, 6, [200, 190, 170], 0.9);
+        if (!kitFurn) {
+          mbP.box(x0 + 2.0 * 1.0 + 0.2, y + 0.3, z0 + TM + 0.9, 1.0, 0.45, 2.0, [150, 60, 54], 0.7);
+          mbP.box(x0 + 2.0 + 0.2, y + 0.58, z0 + TM + 0.35, 0.9, 0.18, 0.5, [226, 216, 196], 0.9);
+          mbP.box(x0 + 6.0, y + 0.45, z0 + TM + 2.0, 1.5, 0.12, 1.0, [112, 78, 46], 0.8);
+          mbP.box(x0 + 5.35, y + 0.22, z0 + TM + 1.0 * 2, 0.12, 0.45, 0.12, [86, 60, 36], 0.6);
+          mbP.box(x0 + 6.65, y + 0.22, z0 + TM + 2.0, 0.12, 0.45, 0.12, [86, 60, 36], 0.6);
+          mbP.cyl(x0 + 5.0, y, z0 + TM + 3.0 - 0.2, 0.28, 0.25, 0.4, 6, [112, 78, 46], 0.7);
+          mbP.box(x1 - TM - 0.6, y + 0.35, z0 + TM + 0.5, 0.9, 0.7, 0.7, [120, 90, 56], 0.7);
+          mbP.cyl(x0 + 6.4, y + 0.46, z0 + TM + 2.0, 0.14, 0.12, 0.2, 6, [200, 190, 170], 0.9);
+        }
         // floor rug
         mbP.box(x0 + 5.0, y + 0.015, z0 + TM + 2.4, 2.4, 0.03, 1.6, [120, 52, 48], 1);
         // roof (separate mesh – hidden when the player is inside)
@@ -737,7 +740,9 @@
 
     // ---- Generic props placed by zone data: { kind, tx, ty, c? } ------------------
     _props(w, chunkOf, hash, hAt) {
+      const kitKinds = (MEO.KitProps && MEO.KitProps.on()) ? { barrel: 1, crate: 1, lantern: 1, banner: 1 } : {};
       w.props.forEach(function (p, n) {
+        if (kitKinds[p.kind]) return;                       // a real model is placed instead
         const x = (p.tx + 0.5) * TM + (p.dx || 0);
         const z = (p.ty + 0.5) * TM + (p.dz || 0);
         const y = hAt(x, z);
