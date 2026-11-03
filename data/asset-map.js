@@ -12,6 +12,8 @@ MEO.ASSET_MAP = {
     party: ['m_ranger', 'f_ranger'],
     mob: ['m_ranger', 'f_ranger']
   },
+  // the training dummies in the square are props, not creatures
+  prop: { dummy: 'Dummy', dummy_armored: 'Dummy', dummy_puncher: 'Dummy' },
   mob: {
     orc_scout: 'orc', orc_brute: 'orc', warchief: 'orc', hill_orc: 'orc',
     isengard_scout: 'orc', moria_orc: 'orc', moria_goblin: 'orc', goblin_sneak: 'orc',

@@ -7,7 +7,7 @@
 
   const MEO = (window.MEO = window.MEO || {});
 
-  MEO.VERSION = '0.24.0 (Dressed characters)';
+  MEO.VERSION = '0.25.0 (Props)';
 
   MEO.CONFIG = {
     TILE: 32,          // pixels per tile

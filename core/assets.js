@@ -79,7 +79,11 @@
         return Assets.models[id] ? { id: id, height: height || H[id] || 1.85 } : null;
       };
       if (e.type === 'mob') {
-        if (e.isStatic || e.shape === 'dummy') return null;
+        if (e.shape === 'dummy') {
+          const pn = M.prop && M.prop[e.mobId];
+          return pn && MEO.KitProps && MEO.KitProps.on() ? { piece: pn, height: 1.9 } : null;
+        }
+        if (e.isStatic) return null;
         const id = M.mob && M.mob[e.mobId];
         if (!id) return null;
         const h = (MEO.ASSET_MOB_H && MEO.ASSET_MOB_H[e.mobId]) || null;
@@ -140,6 +144,7 @@
       if (!Assets.ready) Assets.load();
       const want = Assets.pick(e);
       if (!want) return false;
+      if (want.piece) return Assets._drawProp(e, want, x, y, z, Three);
       let inst = e._glb;
       if (!inst || inst.id !== want.id) {
         if (inst) Assets._dispose(inst);
@@ -157,8 +162,25 @@
         Assets._live.push(inst);
       }
       Assets.play(inst, Assets.state(e, time), time);
-      inst.mixer.update(Math.min(0.1, Math.max(0, time - inst.last)));
+      if (inst.mixer) inst.mixer.update(Math.min(0.1, Math.max(0, time - inst.last)));
       inst.last = time;
+      inst.wrap.position.set(x, y, z);
+      inst.wrap.rotation.y = Math.PI / 2 - (e.facing || 0);
+      inst.wrap.visible = true;
+      Assets._used.push(inst);
+      return true;
+    },
+
+    /** A static prop model (training dummy): no skeleton, no animation. */
+    _drawProp(e, want, x, y, z, Three) {
+      let inst = e._glb;
+      if (!inst || inst.id !== want.piece) {
+        if (inst) Assets._dispose(inst);
+        const o = MEO.KitProps.place(Three._entGroup, want.piece, 0, 0, 0, 0);
+        if (!o) return false;
+        inst = e._glb = { id: want.piece, wrap: o, mixer: null, own: [], lib: [], action: null, kind: '', last: 0 };
+        Assets._live.push(inst);
+      }
       inst.wrap.position.set(x, y, z);
       inst.wrap.rotation.y = Math.PI / 2 - (e.facing || 0);
       inst.wrap.visible = true;
@@ -170,6 +192,12 @@
       if (inst.wrap.parent) inst.wrap.parent.remove(inst.wrap);
       const i = Assets._live.indexOf(inst);
       if (i >= 0) Assets._live.splice(i, 1);
+    },
+
+    /** Drop every instance (a new zone, or the renderer rebuilt the scene). */
+    purge() {
+      Assets._live.slice().forEach(Assets._dispose);
+      Assets._used = [];
     },
 
     /** Hide instances not drawn this frame and drop ones gone for a while. */
@@ -188,9 +216,6 @@
 
   // a new zone means new creatures: drop every instance
   if (MEO.Events) {
-    MEO.Events.on('zone:enter', function () {
-      Assets._live.slice().forEach(Assets._dispose);
-      Assets._used = [];
-    });
+    MEO.Events.on('zone:enter', function () { Assets.purge(); });
   }
 })();
