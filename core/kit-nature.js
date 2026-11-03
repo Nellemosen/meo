@@ -64,6 +64,7 @@
       KN.group = grp;
 
       // 1) decide a model and a transform for every spot, grouped by model
+      const ash = !!(MEO.Renderer.world && MEO.Renderer.world.theme && MEO.Renderer.world.theme.ash);
       const byName = {};
       const m4 = new T3.Matrix4();
       const q = new T3.Quaternion();
@@ -72,8 +73,8 @@
       spots.forEach(function (s) {
         let set, target;
         if (s.k === 'tree') {
-          set = s.v2 > 0.93 ? BARE : TREES;       // the odd bare tree, as the procedural pass did
-          target = 3.0 * s.s;
+          set = (ash || s.v2 > 0.93) ? BARE : TREES;   // burnt country: nothing green is left
+          target = (ash ? 2.4 : 3.0) * s.s;
         } else if (s.k === 'rock') {
           set = ROCKS;
           target = 1.0 * s.s;
