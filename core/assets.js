@@ -17,13 +17,13 @@
 
   // kind -> the clip names to look for, best first
   const CLIPS = {
-    idle: ['Idle_Loop', 'Idle'],
-    walk: ['Walk_Loop', 'Walk'],
-    run: ['Jog_Fwd_Loop', 'Run', 'Sprint_Loop'],
-    attack: ['Sword_Attack', 'Punch', 'Punch_Cross'],
-    cast: ['Spell_Simple_Shoot', 'Weapon'],
-    hit: ['Hit_Chest', 'HitReact'],
-    death: ['Death01', 'Death']
+    idle: ['Idle_Loop', 'Idle', 'Idle_A'],
+    walk: ['Walk_Loop', 'Walk', 'Walking_A'],
+    run: ['Jog_Fwd_Loop', 'Run', 'Running_A', 'Sprint_Loop'],
+    attack: ['Sword_Attack', 'Punch', 'Melee_1H_Attack_Chop', 'Melee_2H_Attack_Chop', 'Punch_Cross'],
+    cast: ['Spell_Simple_Shoot', 'Weapon', 'Melee_1H_Attack_Chop'],
+    hit: ['Hit_Chest', 'HitReact', 'Hit_A'],
+    death: ['Death01', 'Death', 'Death_A']
   };
   const ONESHOT = { attack: 1, cast: 1, death: 1, hit: 1 };
   const ATTACK_TIME = 0.75;     // seconds an attack animation is shown
@@ -61,10 +61,16 @@
       });
     },
 
-    /** Clips every rigged character shares (the animation library). */
-    shared() {
-      const a = Assets.models.anims;
-      return a ? a.clips : [];
+    /** The animation clips that fit this model's rig (see MEO.ASSET_RIG / ASSET_LIBS). */
+    shared(modelId) {
+      const rig = (MEO.ASSET_RIG && MEO.ASSET_RIG[modelId]) || 'ual';
+      const libs = (MEO.ASSET_LIBS && MEO.ASSET_LIBS[rig]) || ['anims'];
+      let out = [];
+      libs.forEach(function (id) {
+        const m = Assets.models[id];
+        if (m) out = out.concat(m.clips);
+      });
+      return out;
     },
 
     /** { id, height } for an entity, or null to keep the procedural model. */
@@ -157,7 +163,7 @@
         Three._entGroup.add(wrap);
         inst = e._glb = {
           id: want.id, wrap: wrap, mixer: new T3.AnimationMixer(root),
-          own: src.clips, lib: Assets.shared(), action: null, kind: '', last: time, h: want.height
+          own: src.clips, lib: Assets.shared(want.id), action: null, kind: '', last: time, h: want.height
         };
         Assets._live.push(inst);
       }
