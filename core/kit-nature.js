@@ -33,6 +33,8 @@
     },
 
     on() {
+      const w = MEO.Renderer && MEO.Renderer.world;
+      if (w && w.theme && w.theme.cave) return false;      // underground: core/kit-cave.js dresses it
       const S = MEO.Settings;
       if (S && S.get('gfx.engine') === 'classic') return false;
       if (S && !S.get('gfx.kitNature')) return false;

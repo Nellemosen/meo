@@ -7,7 +7,7 @@
 
   const MEO = (window.MEO = window.MEO || {});
 
-  MEO.VERSION = '0.26.0 (Nature and undead)';
+  MEO.VERSION = '0.27.0 (Cave groundwork)';
 
   MEO.CONFIG = {
     TILE: 32,          // pixels per tile
