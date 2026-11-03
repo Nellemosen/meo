@@ -15,6 +15,8 @@
   const DEFS = {
     'gfx.engine': { def: 'three', tab: 'graphics', label: 'Graphics engine', type: 'select', options: [['three', 'three.js – PBR lighting (new)'], ['classic', 'Classic']], help: 'three.js gives physically based lighting, soft sun shadows and tone mapping, and can load glTF models. Classic is the old renderer.' },
     'gfx.kitHouses': { def: true, tab: 'graphics', label: 'Detailed houses (glTF models)', type: 'toggle', help: 'Builds the villages from real modular house models instead of the simple blocks. Needs the three.js engine.' },
+    'gfx.kitProps': { def: true, tab: 'graphics', label: 'Detailed props (glTF models)', type: 'toggle', help: 'Barrels, crates, banners, market stalls and furniture as real models. Needs the three.js engine.' },
+    'gfx.kitNature': { def: true, tab: 'graphics', label: 'Detailed trees and rocks (glTF models)', type: 'toggle', help: 'Real tree and rock models instead of the generated ones. Needs the three.js engine.' },
     'gfx.quality': { def: 'high', tab: 'graphics', label: 'Render resolution', type: 'select', options: [['low', 'Low (50%)'], ['med', 'Medium (75%)'], ['high', 'High (100%)']], help: 'Lower is faster on weak graphics cards.' },
     'gfx.adaptive': { def: true, tab: 'graphics', label: 'Lower resolution automatically when slow', type: 'toggle' },
     'gfx.viewDist': { def: 'normal', tab: 'graphics', label: 'View distance', type: 'select', options: [['near', 'Near'], ['normal', 'Normal'], ['far', 'Far']] },
@@ -114,6 +116,8 @@
           break;
         case 'gfx.engine':
         case 'gfx.kitHouses':
+        case 'gfx.kitProps':
+        case 'gfx.kitNature':
           if (R && R.world) R.setWorld(R.world);
           break;
         case 'gfx.viewDist':
